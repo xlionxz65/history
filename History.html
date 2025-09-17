@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>พระบาทสมเด็จพระจุลจอมเกล้าเจ้าอยู่หัว</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* Header Navigation */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover {
+            color: #007bff;
+        }
+
+        .nav-menu a.active {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .nav-menu a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #007bff;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            color: #666;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .social-icons a:hover {
+            color: #007bff;
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        .main-container {
+            margin-top: 80px;
+            height: calc(100vh - 80px);
+            display: flex;
+            position: relative;
+        }
+
+        .content-section {
+            flex: 1;
+            padding: 80px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #fff;
+            position: relative;
+        }
+
+        .image-section {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-content {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.6s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 60px;
+        }
+
+        .slide-content.active {
+            opacity: 1;
+            transform: translateX(0);
+            position: relative;
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .slide-description {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Image slides */
+        .image-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-slide.active {
+            opacity: 1;
+        }
+
+        .image-slide img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-slide.gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .image-slide.blue-bg {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .image-slide.purple-bg {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        /* Navigation Controls */
+        .nav-controls {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            user-select: none;
+        }
+
+        .nav-arrow:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+            transform: scale(1.1);
+        }
+
+        .nav-arrow:active {
+            transform: scale(0.95);
+        }
+
+        .nav-arrow svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            pointer-events: none;
+        }
+
+        .slide-dots {
+            display: flex;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .dot:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: scale(1.1);
+        }
+
+        .dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .content-section, .slide-content {
+                padding: 60px 40px;
+            }
+
+            .image-section {
+                height: 50vh;
+                min-height: 400px;
+            }
+
+            .slide-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .content-section, .slide-content {
+                padding: 40px 20px;
+            }
+
+            .slide-title {
+                font-size: 2rem;
+            }
+
+            .slide-description {
+                font-size: 1rem;
+            }
+
+            .nav-controls {
+                bottom: 20px;
+            }
+        }
+
+        /* Thai font optimization */
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Sarabun', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .thai-text {
+            font-family: 'Sarabun', sans-serif;
+            line-height: 1.8;
+        }
+
+        /* Loading animation */
+        .loading {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .loaded {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="loading">
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">👑 รัชกาลที่ 5</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </nav>
+            <div class="social-icons">
+                <a href="#" onclick="alert('Facebook page!')">📘</a>
+                <a href="#" onclick="alert('Instagram page!')">📷</a>
+                <a href="#" onclick="alert('Twitter page!')">🐦</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Content Section -->
+        <div class="content-section">
+            <div class="slide-content active" id="slide-0">
+                <h1 class="slide-title thai-text">พระบาทสมเด็จพระจุลจอมเกล้าเจ้าอยู่หัว</h1>
+                <p class="slide-description thai-text">
+                    พระบาทสมเด็จพระจุลจอมเกล้าเจ้าอยู่หัว ทรงเป็นพระราชโอรสพระองค์ใหญ่ในพระบาทสมเด็จ พระจอมเกล้าเจ้าอยู่หัว รัชกาลที่ 4 และสมเด็จพระเทพศิรินทราบรมราชินี ประสูติ เมื่อวันอังคารที่ 20 กันยายน พ.ศ. 2396
+                </p>
+                <button class="cta-button" onclick="showAlert('เรียนรู้เพิ่มเติมเกี่ยวกับพระบาทสมเด็จพระจุลจอมเกล้าเจ้าอยู่หัว')">เรียนรู้เพิ่มเติม</button>
+            </div>
+
+            <div class="slide-content" id="slide-1">
+                <h1 class="slide-title thai-text">พระนามและการสถาปนา</h1>
+                <p class="slide-description thai-text">
+                    ทรงพระนามตามจารึกในพระสุพรรณบัฎว่า สมเด็จพระเจ้าลูกยาเธอ เจ้าฟ้าจุฬาลงกรณ์ บดินทรเทพยมหามกุฎ บุรุษรัตนราชรวิวงศ์ วรุตมพงศ์ บริพัตร ศิริวัฒนราชกุมาร ทรงได้รับการสถาปนาเป็นเจ้าฟ้าต่างกรม มีพระนามกรมว่า กรมหมื่นพิฆเณศวรสุรสังกาศ
+                </p>
+                <button class="cta-button" onclick="showAlert('ดูรายละเอียดเพิ่มเติมเกี่ยวกับพระนามและการสถาปนา')">ดูรายละเอียด</button>
+            </div>
+
+            <div class="slide-content" id="slide-2">
+                <h1 class="slide-title thai-text">การศึกษาและพัฒนา</h1>
+                <p class="slide-description thai-text">
+                    ทรงเป็นพระราชปิโยรสที่สมเด็จพระบรมชนกนาถโปรดให้เสด็จอยู่ใกล้ชิดติดพระองค์เสมอเพื่อให้มีโอกาสแนะนำสั่งสอนวิชาการต่าง ๆ โดยเฉพาะอย่างยิ่งวิชารัฏฐาภิบาล ราชประเพณีและโบราณคดี นอกจากนั้นยังทรงศึกษาภาษามคธ ภาษาอังกฤษ การยิงปืนไฟ กระบี่กระบอง มวยปล้ำ รวมทั้งการบังคับช้างอีกด้วย
+                </p>
+                <button class="cta-button" onclick="document.location='https://www.youtube.com/watch?v=ycJcA3yYKz8'">สำรวจประวัติ</button>
+            </div>
+        </div>
+
+        <!-- Image Section -->
+        <div class="image-section">
+            <div class="image-slide active gradient-bg" id="image-0">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Chulalongkorn_LoC.jpg/400px-Chulalongkorn_LoC.jpg" alt="พระบาทสมเด็จพระจุลจอมเกล้าเจ้าอยู่หัว">
+            </div>
+            <div class="image-slide blue-bg" id="image-1">
+                <img src="https://scontent.futp1-1.fna.fbcdn.net/v/t39.30808-6/487537526_1175493444384595_3607095595182460478_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFe1Eu5leCFjz7OgWWTYeNW4NLJYxDQutLg0sljENC60nLTHVe4OY1bJblTYD2xwll7_29NWuMrHifzqB14C5_U&_nc_ohc=KKu4n65n_csQ7kNvwFpAg-L&_nc_oc=AdknE66V5-L3Sb_2KHx56M1mSQm5u-h-sKM2GsTinIVyhCl6VwmBSrG475OMdAFhMY-wC4L2l8o8q3FOuzJaCMJm&_nc_zt=23&_nc_ht=scontent.futp1-1.fna&_nc_gid=v0jxI1TGs2XVmxyZgBDevA&oh=00_AfYNc-BfIvQeOP2AsbJSJCOShAJ_sCfCP6ZOBVYaDbnveA&oe=68D0AB4A" alt="พระบรมรูป รัชกาลที่ 5">
+            </div>
+            <div class="image-slide purple-bg" id="image-2">
+                <img src="https://scontent.futp1-1.fna.fbcdn.net/v/t39.30808-6/489334117_1499876444649450_1896348724010811802_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGFryQ0A_L2nALc23dV9Wps7KfwULqish_sp_BQuqKyHyN5Ad0GMBx2E4AQlm6lnqhCbnkVdeTEKSr7ro1KwsGL&_nc_ohc=S1upzVZ9IwwQ7kNvwEmvVRi&_nc_oc=Adnhs6RcRWqaqyYHWfmdZsz6v92mOEm3XD74SA2abZTBW7_X0WXPZCfHYdhhSeylG1krfLhTPcYed2qbtcaqIVKf&_nc_zt=23&_nc_ht=scontent.futp1-1.fna&_nc_gid=CbuiFaG4eJWrLBUQF0GBCg&oh=00_AfZKgeIfMRGeshjaO0Cb0wvNTN7kHmxdbuLx-wgM7gHZ6A&oe=68D0B0A5" alt="พระบาทสมเด็จพระจุลจอมเกล้าเจ้าอยู่หัว ในพระราชพิธี">
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="nav-controls">
+            <div class="nav-arrow" id="prev-btn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+            </div>
+            
+            <div class="slide-dots">
+                <div class="dot active" data-slide="0"></div>
+                <div class="dot" data-slide="1"></div>
+                <div class="dot" data-slide="2"></div>
+            </div>
+            
+            <div class="nav-arrow" id="next-btn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 3;
+
+        // Get all elements
+        const slideContents = document.querySelectorAll('.slide-content');
+        const imageSlides = document.querySelectorAll('.image-slide');
+        const dots = document.querySelectorAll('.dot');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        // Show specific slide function
+        function showSlide(index) {
+            console.log('Showing slide:', index); // Debug log
+            
+            // Ensure index is within bounds
+            if (index < 0) index = totalSlides - 1;
+            if (index >= totalSlides) index = 0;
+
+            // Hide all slides
+            slideContents.forEach((slide, i) => {
+                slide.classList.remove('active');
+            });
+            
+            imageSlides.forEach((slide, i) => {
+                slide.classList.remove('active');
+            });
+            
+            dots.forEach((dot, i) => {
+                dot.classList.remove('active');
+            });
+
+            // Show current slide
+            if (slideContents[index]) slideContents[index].classList.add('active');
+            if (imageSlides[index]) imageSlides[index].classList.add('active');
+            if (dots[index]) dots[index].classList.add('active');
+
+            currentSlide = index;
+        }
+
+        // Navigation functions
+        function nextSlide() {
+            console.log('Next slide clicked'); // Debug log
+            const next = (currentSlide + 1) % totalSlides;
+            showSlide(next);
+        }
+
+        function prevSlide() {
+            console.log('Previous slide clicked'); // Debug log
+            const prev = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(prev);
+        }
+
+        // Alert function for buttons
+        function showAlert(message) {
+            alert(message);
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing...'); // Debug log
+            
+            // Add event listeners to navigation arrows
+            if (nextBtn) {
+                nextBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    nextSlide();
+                });
+            }
+
+            if (prevBtn) {
+                prevBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    prevSlide();
+                });
+            }
+
+            // Add event listeners to dots
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Dot clicked:', index); // Debug log
+                    showSlide(index);
+                });
+            });
+
+            // Navigation menu clicks
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    document.querySelectorAll('.nav-menu a').forEach(l => l.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    alert('คุณคลิกที่เมนู: ' + this.textContent);
+                });
+            });
+
+            // Auto-slide every 8 seconds
+            setInterval(nextSlide, 8000);
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prevSlide();
+                }
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    nextSlide();
+                }
+            });
+
+            // Touch/swipe support for mobile
+            let startX = 0;
+            let endX = 0;
+
+            document.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+            });
+
+            document.addEventListener('touchend', (e) => {
+                endX = e.changedTouches[0].clientX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const diff = startX - endX;
+
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        nextSlide(); // Swipe left - next slide
+                    } else {
+                        prevSlide(); // Swipe right - previous slide
+                    }
+                }
+            }
+
+            // Show loading complete
+            document.body.classList.remove('loading');
+            document.body.classList.add('loaded');
+            
+            console.log('Initialization complete!'); // Debug log
+        });
+    </script>
+</body>
+</html>
