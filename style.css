@@ -1,0 +1,43 @@
+.container {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.container p {
+  margin: 5px 0;
+}
+
+.input-section {
+  margin: 20px 0;
+}
+
+.input-section label {
+  margin-right: 5px;
+}
+
+#choice-input {
+  width: 200px;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+#submit {
+  padding: 5px 10px;
+}
+
+.result {
+  margin: 20px 0;
+}
+
+.score {
+  margin: 20px 0;
+}
+
+.score p {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+#reset {
+  padding: 5px 10px;
+}

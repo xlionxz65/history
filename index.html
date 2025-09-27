@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
+        type="image/png">
+    <title>Rock Paper Scissors Game</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="container">
+        <p>ROCK: 0</p>
+        <p>PAPER: 1</p>
+        <p>SCISSOR: 2</p>
+        
+        <div class="input-section">
+            <label>Enter your choice: </label>
+            <input type="text" id="choice-input" maxlength="1">
+            <button id="submit">Submit</button>
+        </div>
+        
+        <div class="result">
+            <p id="game-result"></p>
+        </div>
+        
+        <div class="score">
+            <p>Wins: <span id="player-score">0</span></p>
+            <p>Losses: <span id="computer-score">0</span></p>
+        </div>
+        
+        <button id="reset">Reset</button>
+    </div>
+    <script type="module" src="./script.js"></script>
+</body>
+
+</html>
